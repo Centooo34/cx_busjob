@@ -16,9 +16,7 @@ This is a simple **bus job** script for **FiveM** servers where players can perf
 ## Installation
 
 ### Requirements:
-- **FiveM** server
 - **ox_lib** (for notifications, context menus, and other UI elements)
-- Basic Lua knowledge to modify the script as needed.
 
 ### Steps to install:
 
