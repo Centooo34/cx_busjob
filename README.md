@@ -2,6 +2,7 @@
 
 This is a simple **bus job** script for **FiveM** servers where players can perform bus driving duties, transporting passengers between different bus stops and earning income for each stop completed. It includes features such as spawning a bus, setting waypoints to bus stops, and collecting rewards.
 
+## PREVIEW: 
 ## Features
 
 - **Bus Job**: Players can start and stop work, drive a bus between random bus stops, and complete the route to earn money.
