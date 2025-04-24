@@ -24,3 +24,10 @@ Citizen.CreateThread( function()
     
     PerformHttpRequest("https://raw.githubusercontent.com"..updatePath.."/master/version", checkVersion, "GET")
     end)
+
+AddEventHandler('onResourceStart', function(resourceName)
+    if resourceName == GetCurrentResourceName() then
+        Wait(1000)
+        TriggerClientEvent("busjob:spawnPed", -1)
+    end
+end)
