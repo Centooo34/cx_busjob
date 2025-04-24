@@ -5,8 +5,8 @@ end)
 
 
 Citizen.CreateThread( function()
-    updatePath = "/Bluethefurry/FiveM-Resource-Version-Check-Thing" 
-    resourceName = "FiveM-Resource-Version-Check-Thing ("..GetCurrentResourceName()..")" 
+    updatePath = "/Centooo34/cx_busjob" 
+    resourceName = "CX_busjob ("..GetCurrentResourceName()..")" 
     
     function checkVersion(err,responseText, headers)
         curVersion = LoadResourceFile(GetCurrentResourceName(), "version")
