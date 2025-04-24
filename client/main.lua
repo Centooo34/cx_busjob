@@ -6,21 +6,6 @@ local prewStops = {}
 local stops = Config.Stops
 local vehicleOut = false
 
-
-if Config.UseBlip then
-    CreateThread(function()
-        local blip = AddBlipForCoord(436.470336, -640.338440, 28.723754)
-        SetBlipSprite(blip, 513) 
-        SetBlipDisplay(blip, 4)
-        SetBlipScale(blip, 0.9)
-        SetBlipColour(blip, 2)
-        SetBlipAsShortRange(blip, true)   
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString(Config.Blip) -- názov na mape
-        EndTextCommandSetBlipName(blip)
-    end)
-end
-
 local function spawnWorkCar()
     if vehicleOut then
         return
@@ -30,7 +15,7 @@ local function spawnWorkCar()
     vehicleModel = GetHashKey("bus")
     RequestModel(vehicleModel)
     while not HasModelLoaded(vehicleModel) do
-        Wait(1000)
+        Citizen.Wait(500)
     end
 
     local spawnCoords = Config.CarSpawn
@@ -46,31 +31,24 @@ local function spawnWorkCar()
     end
 end
 
-local prewStops = {}
-
 local function selectStop()
-    if #prewStops >= #stops then
-        prewStops = {}
-    end
+    if #prewStops >= #stops then prewStops = {} end
     local newStop
-    local isUsed
+    local isDuplicate
     repeat
         newStop = stops[math.random(1, #stops)]
-        isUsed = false
-        for _, usedStop in ipairs(prewStops) do
-            if usedStop == newStop then
-                isUsed = true
+        isDuplicate = false
+        for i = 1, #prewStops do
+            local stop = prewStops[i]
+            if stop.x == newStop.x and stop.y == newStop.y and stop.z == newStop.z then
+                isDuplicate = true
                 break
             end
         end
-    until newStop ~= selectedStop and not isUsed
-    if selectedStop then
-        table.insert(prewStops, selectedStop)
-    end
+    until not isDuplicate
     selectedStop = newStop
-    if currentBlip then
-        RemoveBlip(currentBlip)
-    end
+    table.insert(prewStops, selectedStop)
+    if currentBlip then RemoveBlip(currentBlip) end
     currentBlip = AddBlipForCoord(selectedStop.x, selectedStop.y, selectedStop.z)
     SetBlipSprite(currentBlip, 280)
     SetBlipColour(currentBlip, 3)
@@ -180,13 +158,6 @@ lib.registerContext({
                 end
                 local moneyPerStop = Config.MoneyPerStop
                 local money = moneyPerStop * stopsDone
-                local ped = PlayerPedId()
-                local coordsPed = GetEntityCoords(ped)
-                local coords = vector3(438.314301, -626.257141, 27.706909)
-                if GetDistanceBetweenCoords(coordsPed, coords, true) > 10.5 then
-                    lib.notify({ title = "Distance", description = "You are not in distance" })
-                    return
-                end
                 TriggerServerEvent("cx:addMoney", money)
                 lib.notify({ title = Config.Locales.Brigade, description = Config.Locales.Income })
                 stopsDone = 0
@@ -205,15 +176,13 @@ lib.registerContext({
     }
 })
 
-
 local pedModel = "s_m_m_gentransport"
-local coords = vector3(438.314301, -626.257141, 27.706909)
+local coords = vector3(436.470336, -640.338440, 27.723754)
 local heading = 90.0
 
 CreateThread(function()
     RequestModel(pedModel)
     while not HasModelLoaded(pedModel) do Wait(0) end
-
     local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z, heading, true, false)
     FreezeEntityPosition(ped, true)
     SetEntityInvincible(ped, true)
@@ -228,3 +197,17 @@ CreateThread(function()
         end
     }})
 end)
+
+
+if Config.UseBlip then
+    local coords = vector3(436.470336, -640.338440, 28.723754)
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, 513)
+    SetBlipDisplay(blip, 4)
+    SetBlipScale(blip, 0.8)
+    SetBlipColour(blip, 5)
+    SetBlipAsShortRange(blip, true)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString(Config.Blip)
+    EndTextCommandSetBlipName(blip)
+end
