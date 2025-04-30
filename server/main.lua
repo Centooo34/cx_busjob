@@ -6,9 +6,6 @@ RegisterNetEvent('cx:addMoney', function(count)
             exports.ox_inventory:AddItem(src, 'money', count)
         end
     end
-else
-    return
-end
 end)
 
 
