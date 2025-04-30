@@ -30,6 +30,8 @@ Config.Stops = {
 
 Config.CarSpawn = vector4(425.591218, -618.896728, 28.487916, 99.212594)
 
+Config.PedCoords = vector3(436.470336, -640.338440, 27.723754)
+
 Config.MoneyPerStop = math.random(30,50) -- set amount money per stop
 
 Config.UseBlip = true -- set to true if you want to use blip on map
