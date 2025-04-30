@@ -1,4 +1,4 @@
-local stopsDone = 0
+stopsDone = 0
 local isWorking = false
 local currentBlip = nil
 local selectedStop = nil
@@ -176,11 +176,10 @@ lib.registerContext({
     }
 })
 
-local pedModel = "s_m_m_gentransport"
-local coords = vector3(436.470336, -640.338440, 27.723754)
-local heading = 90.0
-
-CreateThread(function()
+RegisterNetEvent("busjob:spawnPed", function()
+    local pedModel = "s_m_m_gentransport"
+    local coords = Config.PedCoords
+    local heading = 90.0
     RequestModel(pedModel)
     while not HasModelLoaded(pedModel) do Wait(0) end
     local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z, heading, true, false)
@@ -196,18 +195,16 @@ CreateThread(function()
             lib.showContext("busjob")
         end
     }})
+
+    if Config.UseBlip then
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, 513)
+        SetBlipDisplay(blip, 4)
+        SetBlipScale(blip, 0.8)
+        SetBlipColour(blip, 5)
+        SetBlipAsShortRange(blip, true)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString(Config.Nlip)
+        EndTextCommandSetBlipName(blip)
+    end
 end)
-
-
-if Config.UseBlip then
-    local coords = vector3(436.470336, -640.338440, 28.723754)
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, 513)
-    SetBlipDisplay(blip, 4)
-    SetBlipScale(blip, 0.8)
-    SetBlipColour(blip, 5)
-    SetBlipAsShortRange(blip, true)
-    BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString(Config.Blip)
-    EndTextCommandSetBlipName(blip)
-end
