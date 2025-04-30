@@ -146,6 +146,8 @@ lib.registerContext({
                 selectedStop = nil
                 lib.notify({ title = Config.Locales.Brigade, description = Config.Locales.WorkEnded })
                 DeleteVehicle(vehicle)
+                RemoveBlip(currentBlip)
+
             end
         },
         {
